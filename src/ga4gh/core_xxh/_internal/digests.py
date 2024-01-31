@@ -8,6 +8,13 @@ https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0239883
 import base64
 import hashlib
 
+import xxhash
+
+
+def xxh(blob):
+    return xxhash.xxh128(blob).hexdigest()
+
+
 
 def sha512t24u(blob):
     """generate a base64url-encode, truncated SHA-512 digest for given

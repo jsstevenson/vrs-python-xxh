@@ -24,7 +24,7 @@ from typing import Union, Optional
 from pydantic import BaseModel, RootModel
 from canonicaljson import encode_canonical_json
 
-from .digests import sha512t24u
+from .digests import xxh
 from .pydantic import (
     is_pydantic_instance,
     is_curie_type,
@@ -55,9 +55,9 @@ class GA4GHComputeIdentifierWhen(IntEnum):
       INVALID - Compute the identifier if it is missing or is present but syntactically invalid
       MISSING - Only compute the identifier if missing
 
-    The default behavior is safe and ensures that the identifiers are correct, 
-    but at a performance cost. Where the source of inputs to `ga4gh_identify` 
-    are well controlled, for example when annotating a VCF file with VRS IDs, 
+    The default behavior is safe and ensures that the identifiers are correct,
+    but at a performance cost. Where the source of inputs to `ga4gh_identify`
+    are well controlled, for example when annotating a VCF file with VRS IDs,
     using `MISSING` can improve performance.
     """
 
@@ -132,7 +132,7 @@ def parse_ga4gh_identifier(ir):
 
 def ga4gh_identify(vro):
     """
-    Return the GA4GH digest-based id for the object, as a CURIE
+    Return the GA4GH digest-based id (using xxhash) for the object, as a CURIE
     (string).  Returns None if object is not identifiable.
 
     TODO update example for VRS 2.0
@@ -191,7 +191,7 @@ def ga4gh_digest(vro: BaseModel, do_compact=True):
         digest = vro.refgetAccession.split("SQ.")[-1]
     else:
         s = ga4gh_serialize(vro)
-        digest = sha512t24u(s)
+        digest = xxh(s)
     return digest
 
 

@@ -5,7 +5,7 @@
 import warnings
 from importlib.metadata import version, PackageNotFoundError
 
-from ._internal.digests import sha512t24u
+from ._internal.digests import sha512t24u, xxh
 from ._internal.enderef import ga4gh_enref, ga4gh_deref
 from ._internal.exceptions import GA4GHError
 from ._internal.identifiers import (
